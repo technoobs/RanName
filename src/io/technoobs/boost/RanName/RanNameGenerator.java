@@ -7,101 +7,81 @@
 package io.technoobs.boost.RanName;
 
 import java.util.Random;
-import java.util.Set;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
-public class RanNameGenerator {
+public class RanNameGenerator extends RanName {
 
-	private String nameTokens;
-	// name length
-	private int nameLen;
-	// password length
-	private int pwdLen;
-	// Map to store username and password
-	HashMap<String, String> nameMap = new HashMap<String, String>();
+	ArrayList<ArrayList<String>> storeMap = new ArrayList<ArrayList<String>>();
 
-	/*
-	 * Default constructor
-	 */
-	public RanNameGenerator(int nameLen, int pwdLen) {
-		this.nameLen = nameLen;
-		this.pwdLen = pwdLen;
-	}
+	public RanNameGenerator(RanName a) {
+		nameLen = a.getNameLen();
+		pwdLen = a.getPwdLen();
+		userNum = a.getUserNum();
+		userTokens = a.getUserTokens();
+		outPutFile = a.getOutPutFile();
 
-	/*
-	 * Constructor with name token
-	 */
-	public RanNameGenerator(String nameTokens, int nameLen, int pwdLen) {
-
-		this.nameTokens = processNameTokens(nameTokens);
-		this.nameLen = nameLen;
-		this.pwdLen = pwdLen;
-	}
-
-	/*
-	 * Create multiple default users or token users at one time. <num> is the
-	 * parameter to define the total number of users to be generated.
-	 * 
-	 * A HashMap in which "USERNAME" and "PASSWORD" are stored will be returned.
-	 */
-	public HashMap<String, String> createMultiUsers(int num) {
-		if (num <= 0) {
-			// throw error
-		} else {
-			for (int i = 0; i < num; i++) {
-				nameMap.put(createUser(), createPwd());
-			}
+		if (!userTokens.isEmpty()) {
+			userTokens = processNameTokens(userTokens);
 		}
-
-		return nameMap;
-	}
-
-	public HashMap<String, String> createMultiTokenUsers(int num) {
-		if (num <= 0) {
-			// throw error
-		} else {
-			for (int i = 0; i < num; i++) {
-				nameMap.put(createTokenUser(), createPwd());
-			}
-		}
-
-		return nameMap;
 	}
 
 	/*
-	 * Create user without name token
+	 * Create single user
 	 */
 	public String createUser() {
-		System.out.println("Starting to create users...");
 		// User name
 		StringBuilder userNameBuilder = new StringBuilder(nameLen);
-		for (int i = 0; i < nameLen; i++) {
-			getRandomChar(userNameBuilder);
+		if (userTokens.isEmpty()) {
+			for (int i = 0; i < nameLen; i++) {
+				getRandomChar(userNameBuilder);
+			}
+			return userNameBuilder.toString();
+		} else {
+			for (int i = 0; i < nameLen - userTokens.length(); i++) {
+				getRandomChar(userNameBuilder);
+			}
+			return userTokens + userNameBuilder.toString();
 		}
-		return userNameBuilder.toString();
 	}
 
 	/*
-	 * Create user with name token
+	 * Create multiple users
 	 */
-	public String createTokenUser() {
-		System.out.println("Starting to create users with tokens...");
-		// User name
-		StringBuilder userNameBuilder = new StringBuilder(nameLen);
-		for (int i = 0; i < nameLen - nameTokens.length(); i++) {
-			getRandomChar(userNameBuilder);
+	public ArrayList<ArrayList<String>> createMultipleUsers() {
+		for (int i = 0; i < userNum; i++) {
+			ArrayList<String> storeMapRow = new ArrayList<String>();
+			String rowUserName = createUser();
+			String rowUserPwd = createPwd();
+
+			System.out.println("Created username is: " + rowUserName);
+			System.out.println("Created user password is: " + rowUserPwd);
+
+			storeMapRow.add(rowUserName);
+			storeMapRow.add(rowUserPwd);
+
+			System.out.println("First element of row is: " + storeMapRow.get(0));
+			System.out.println("Second element of row is: " + storeMapRow.get(1));
+
+			for (String listEle : storeMapRow) {
+				System.out.println("storeMapRow element is: " + listEle);
+			}
+
+			System.out.println("--------------------------------------------------");
+
+			storeMap.add(i, storeMapRow);
 		}
-		return nameTokens + userNameBuilder.toString();
+
+		for (ArrayList<String> temp : storeMap) {
+			System.out.println(temp);
+		}
+
+		return storeMap;
 	}
 
 	/*
 	 * Create password
 	 */
 	public String createPwd() {
-		System.out.println("Starting to create user password...");
 		// User password
 		StringBuilder userPwdBuilder = new StringBuilder(pwdLen);
 		for (int i = 0; i < pwdLen; i++) {
@@ -111,11 +91,12 @@ public class RanNameGenerator {
 	}
 
 	/*
-	 * Store generated username and password in file
+	 * Store generated username and password into file
 	 */
-	// public String printName(String outputFile) {
-	//
-	// }
+	public void storeInFile(String file) {
+		RanNameFile fileProcessor = new RanNameFile();
+//		fileProcessor.printName(content, file);
+	}
 
 	/*
 	 * Process input name tokens (remove space, and always put '_' after name
@@ -142,16 +123,12 @@ public class RanNameGenerator {
 		// Get random character
 		if (charType == 1) {
 			codeNum = getRandomNum(33, 38);
-			System.out.println("Character random code is: " + codeNum);
 		} else if (charType == 2) {
 			codeNum = getRandomNum(48, 57);
-			System.out.println("Character random code is: " + codeNum);
 		} else if (charType == 3) {
 			codeNum = getRandomNum(65, 90);
-			System.out.println("Character random code is: " + codeNum);
 		} else if (charType == 4) {
 			codeNum = getRandomNum(97, 122);
-			System.out.println("Character random code is: " + codeNum);
 		}
 		s.append(Character.toString((char) codeNum));
 		return s;
@@ -166,21 +143,24 @@ public class RanNameGenerator {
 		return ranType.nextInt(max - min + 1) + min;
 	}
 
-	public static void main(String[] args) {
-		RanNameGenerator x = new RanNameGenerator("user01", 12, 12);
-		// System.out.println(x.createTokenUser());
-		// System.out.println(x.createPwd());
+	public void TestArrayList() {
+		storeMap.add(new ArrayList<String>());
+		storeMap.get(0).add(new String("sssssss"));
+	}
 
-		// RanNameGenerator x = new RanNameGenerator(12, 12);
-		HashMap<String, String> nameMap = x.createMultiTokenUsers(10);
-		Set set = nameMap.entrySet();
-		Iterator iterator = set.iterator();
-		while (iterator.hasNext()) {
-			Map.Entry mentry = (Map.Entry) iterator.next();
-			System.out.print("key is: " + mentry.getKey() + " & Value is: ");
-			System.out.println(mentry.getValue());
+	/*
+	 * Store generated users
+	 */
+	private void storeGeneratedUsers(int row, int col, Object content) {
+		storeMap.get(row).add(col, content.toString());
+
+		for (int i = 0; i < row; i++) {
+			storeMap.add(new ArrayList<String>());
+			for (int j = 0; j < col; j++) {
+				storeMap.get(i).add(j, "j");
+			}
+
 		}
 	}
 
 }
-
