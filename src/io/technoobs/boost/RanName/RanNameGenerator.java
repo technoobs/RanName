@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class RanNameGenerator extends RanName {
 
-	ArrayList<ArrayList<String>> storeMap = new ArrayList<ArrayList<String>>();
+	ArrayList<ArrayList<String>> storedUsers = new ArrayList<ArrayList<String>>();
 
 	public RanNameGenerator(RanName a) {
 		nameLen = a.getNameLen();
@@ -47,7 +47,7 @@ public class RanNameGenerator extends RanName {
 	/*
 	 * Create multiple users
 	 */
-	public ArrayList<ArrayList<String>> createMultipleUsers() {
+	public void createUsers() {
 		for (int i = 0; i < userNum; i++) {
 			ArrayList<String> storeMapRow = new ArrayList<String>();
 			String rowUserName = createUser();
@@ -68,14 +68,8 @@ public class RanNameGenerator extends RanName {
 
 			System.out.println("--------------------------------------------------");
 
-			storeMap.add(i, storeMapRow);
+			storedUsers.add(i, storeMapRow);
 		}
-
-		for (ArrayList<String> temp : storeMap) {
-			System.out.println(temp);
-		}
-
-		return storeMap;
 	}
 
 	/*
@@ -88,14 +82,6 @@ public class RanNameGenerator extends RanName {
 			getRandomChar(userPwdBuilder);
 		}
 		return userPwdBuilder.toString();
-	}
-
-	/*
-	 * Store generated username and password into file
-	 */
-	public void storeInFile(String file) {
-		RanNameFile fileProcessor = new RanNameFile();
-//		fileProcessor.printName(content, file);
 	}
 
 	/*
@@ -142,25 +128,4 @@ public class RanNameGenerator extends RanName {
 		ranType.setSeed(System.nanoTime()); // set random seed
 		return ranType.nextInt(max - min + 1) + min;
 	}
-
-	public void TestArrayList() {
-		storeMap.add(new ArrayList<String>());
-		storeMap.get(0).add(new String("sssssss"));
-	}
-
-	/*
-	 * Store generated users
-	 */
-	private void storeGeneratedUsers(int row, int col, Object content) {
-		storeMap.get(row).add(col, content.toString());
-
-		for (int i = 0; i < row; i++) {
-			storeMap.add(new ArrayList<String>());
-			for (int j = 0; j < col; j++) {
-				storeMap.get(i).add(j, "j");
-			}
-
-		}
-	}
-
 }
