@@ -48,13 +48,16 @@ public class RanNameFile {
 			}
 			FileWriter fw = new FileWriter(file, true);
 			BufferedWriter writer = new BufferedWriter(fw);
+			
 			// Write user information according to file format
-			if(cFormat == "raw") { // raw format
+			if(cFormat.equals("raw")) { // raw format
+				System.out.println("Starting to store raw data...");
 				for(ArrayList<String> userInfo : users) {
 					writer.write(userInfo.toString());
 					writer.write("\n");
 				}
-			} else if(cFormat == "csv") { // csv format
+			} else if(cFormat.equals("csv")) { // csv format
+				System.out.println("Starting to store csv data...");
 				writer.write("UserName,Password\n");
 				for(ArrayList<String> userInfo : users) {
 					// write username
@@ -63,7 +66,8 @@ public class RanNameFile {
 					writer.write(userInfo.get(1).toString());
 					writer.write("\n");
 				}
-			} else if(cFormat == "json") { // json format
+			} else if(cFormat.equals("json")) { // json format
+				System.out.println("Starting to store json data...");
 				writer.write("{\n");
 				writer.write("	\"users\": {\n");
 				for(ArrayList<String> userInfo : users) {

@@ -53,20 +53,8 @@ public class RanNameGenerator extends RanName {
 			String rowUserName = createUser();
 			String rowUserPwd = createPwd();
 
-			System.out.println("Created username is: " + rowUserName);
-			System.out.println("Created user password is: " + rowUserPwd);
-
 			storeMapRow.add(rowUserName);
 			storeMapRow.add(rowUserPwd);
-
-			System.out.println("First element of row is: " + storeMapRow.get(0));
-			System.out.println("Second element of row is: " + storeMapRow.get(1));
-
-			for (String listEle : storeMapRow) {
-				System.out.println("storeMapRow element is: " + listEle);
-			}
-
-			System.out.println("--------------------------------------------------");
 
 			storedUsers.add(i, storeMapRow);
 		}
@@ -128,4 +116,5 @@ public class RanNameGenerator extends RanName {
 		ranType.setSeed(System.nanoTime()); // set random seed
 		return ranType.nextInt(max - min + 1) + min;
 	}
+	
 }
