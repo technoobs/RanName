@@ -94,7 +94,8 @@ public class RanNameCmd {
 			System.out.print(ranGenerator.getStoredUsers().toString());
 		} else {
 			ranGenerator.createUsers();
-			RanNameFile ranFile = new RanNameFile("", outFile, outFormat, ranGenerator.getStoredUsers());
+			RanNameFile ranFile = new RanNameFile(ranName.getOutPutFile(), outFormat, 
+					ranGenerator.getStoredUsers());
 			ranFile.store();
 			System.out.println("OK");
 		}

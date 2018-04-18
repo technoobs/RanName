@@ -10,26 +10,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class RanNameFile {
+public class RanNameFile extends RanName {
 
-	// input file
-	private String inPutFile;
-	// output file
-	private String outPutFile;
 	// content format: raw, csv, json
 	private String cFormat;
 	// generated users
 	private ArrayList<ArrayList<String>> users;
-
-	public RanNameFile() {
-		
-	}
 	
-	public RanNameFile(String inFile, String outFile, String contentFormat,
-			ArrayList<ArrayList<String>> users) {
-		inPutFile = inFile;
-		outPutFile = outFile;
+	public RanNameFile(String outPutFile, String contentFormat, ArrayList<ArrayList<String>> users) {
 		cFormat = contentFormat;
+		this.outPutFile = outPutFile;
 		this.users = users;
 	}
 
