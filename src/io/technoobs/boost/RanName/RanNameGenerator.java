@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class RanNameGenerator extends RanName {
 
-	ArrayList<ArrayList<String>> storedUsers = new ArrayList<ArrayList<String>>();
+	private ArrayList<ArrayList<String>> storedUsers = new ArrayList<ArrayList<String>>();
 
 	public RanNameGenerator(RanName a) {
 		nameLen = a.getNameLen();
@@ -23,6 +23,13 @@ public class RanNameGenerator extends RanName {
 		if (!userTokens.isEmpty()) {
 			userTokens = processNameTokens(userTokens);
 		}
+	}
+	
+	/**
+	 * @return the storedUsers
+	 */
+	public ArrayList<ArrayList<String>> getStoredUsers() {
+		return storedUsers;
 	}
 
 	/*

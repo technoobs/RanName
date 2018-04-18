@@ -91,10 +91,10 @@ public class RanNameCmd {
 		// No output file, print users in console
 		if(outFile == null) {
 			ranGenerator.createUsers();
-			System.out.print(ranGenerator.storedUsers.toString());
+			System.out.print(ranGenerator.getStoredUsers().toString());
 		} else {
 			ranGenerator.createUsers();
-			RanNameFile ranFile = new RanNameFile("", outFile, outFormat, ranGenerator.storedUsers);
+			RanNameFile ranFile = new RanNameFile("", outFile, outFormat, ranGenerator.getStoredUsers());
 			ranFile.store();
 			System.out.println("OK");
 		}

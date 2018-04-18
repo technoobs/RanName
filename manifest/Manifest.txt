@@ -1,0 +1,3 @@
+Manifest-Version: 0.1
+Class-Path: args4j-2.33.jar
+Main-Class: io.technoobs.boost.RanName.RanNameCmd
